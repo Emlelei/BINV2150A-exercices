@@ -121,6 +121,7 @@ recipesController.put("/:id", AuthService.authorize, (req: AuthenticatedRequest,
   return res.sendStatus(204);
 });
 
+//Ajout de la route patch
 /**
  * PATCH /recipes/:id
  * Update certains champs d'une recette existante (auteur ou admin uniquement)

@@ -61,6 +61,8 @@ export function isNewRecipeDTO(obj: any): obj is NewRecipeDTO {
   Array.isArray(obj.steps);
 }
 
+
+//Ajout d'un nouveau guard pour "UpdatedRecipeDTO" (décrit dans la consigne)
 export function isUpdatedRecipeDTO(obj: any): obj is UpdatedRecipeDTO{
   return obj &&
   (!obj.title || isNonEmptyString(obj.title)) &&

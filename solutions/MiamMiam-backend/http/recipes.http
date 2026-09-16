@@ -146,6 +146,7 @@ Authorization: {{login.response.body.token}}
   ]
 }
 
+## Nouveaux tests pour la route PATCH
 ### Modifier partiellement la recette d'alice (non authentifié) -> 401
 PATCH {{server}}/recipes/{{createRecipe.response.body.id}}
 Content-Type: application/json

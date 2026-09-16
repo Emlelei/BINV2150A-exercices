@@ -86,6 +86,7 @@ export interface NewRecipeDTO {
   steps: string[];
 }
 
+//Ajout de "UpdatedRecipeDTO"
 export interface UpdatedRecipeDTO{
   title?: string;
   description?: string;

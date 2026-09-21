@@ -19,10 +19,7 @@ usersController.get("/", AuthService.authorize, AuthService.isAdmin, (req: Authe
   LoggerService.info("[GET] /users");
 
   const users = UsersService.getAll();
-  const usersDTO: UserDTO[] = [];
-  for (const user of users) {
-    usersDTO.push(UsersMapper.toDTO(user));
-  }
+  const usersDTO: UserDTO[] = users.map(user => UsersMapper.toDTO(user)); //programmation fonctionelle
   return res.status(200).json(usersDTO);
 });
 
@@ -36,13 +33,10 @@ usersController.get("/me/favorites", AuthService.authorize, (req: AuthenticatedR
   LoggerService.info("[GET] /users/me/favorites");
 
   if (!req.user) return res.sendStatus(401);
-  const user = req.user;
+  const user = UsersService.getByEmail(req.user.email); //On getByEmail car l'objet req.user n'est plus un User mais un TokenPayload. On sait qu'il est présent car lae user est connecté.e
 
-  const recipes = RecipesService.getByIds(user.favorites);
-  const recipesDTO: RecipeDTO[] = [];
-  for (const recipe of recipes) {
-    recipesDTO.push(RecipesMapper.toDTO(recipe));
-  }
+  const recipes = RecipesService.getByIds(user!.favorites);
+  const recipesDTO: RecipeDTO[] = recipes.map(recipe => RecipesMapper.toDTO(recipe)); //Programmation fonctionnelle
   return res.status(200).json(recipesDTO);
 });
 

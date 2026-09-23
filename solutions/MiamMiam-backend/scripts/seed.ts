@@ -1,5 +1,5 @@
 import fs from "fs";
-
+import bcrypt from 'bcrypt';
 /**
  * Données de démonstration, au format DBO (celui des fichiers JSON).
  * Lancer avec : npm run demo:seed
@@ -7,12 +7,17 @@ import fs from "fs";
 
 const NOW = "2026-09-01T08:00:00.000Z";
 
-// --- Users (UserDBO) --- mots de passe en clair, pour l'instant...
+// --- Users (UserDBO)//générations de mdp hashés
+const SALTING_ROUNDS = 10;
+//hashSync ok ? on ne fait cette opération qu'a des moments définis
+const HASHED_PWD_ADMIN = bcrypt.hashSync("admin", SALTING_ROUNDS);
+const HASHED_PWD_ALICE = bcrypt.hashSync("alice", SALTING_ROUNDS);
+const HASHED_PWD_BOB = bcrypt.hashSync("bob", SALTING_ROUNDS);
 const users = [
   {
     id: 1,
     email: "admin@miammiam.be",
-    password: "admin",
+    hashed_password: HASHED_PWD_ADMIN, //clear : admin
     first_name: "Admin",
     last_name: "MiamMiam",
     role: "admin",
@@ -23,7 +28,7 @@ const users = [
   {
     id: 2,
     email: "alice@vinci.be",
-    password: "alice",
+    hashed_password: HASHED_PWD_ALICE, //clear : alice
     first_name: "Alice",
     last_name: "Dupont",
     role: "user",
@@ -34,7 +39,7 @@ const users = [
   {
     id: 3,
     email: "bob@vinci.be",
-    password: "bob",
+    hashed_password: HASHED_PWD_BOB, //clear : bob
     first_name: "Bob",
     last_name: "Martin",
     role: "user",

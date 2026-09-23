@@ -20,7 +20,8 @@ recipesController.get("/", (req: Request, res: Response) => {
 
   const filter: RecipeFilter = {};
 
-  //typeguard à faire
+
+  //Est-il pertinent de destructurer alors que les const doivent de toute façon etre redefinies selon les conditions (Number ou quoi)
   if (isString(req.query.categoryId)) {
     const categoryId = Number(req.query.categoryId);
     if (!Number.isInteger(categoryId)) return res.sendStatus(400);
@@ -44,10 +45,7 @@ recipesController.get("/", (req: Request, res: Response) => {
   }
 
   const recipes = RecipesService.getAll(filter);
-  const recipesDTO: RecipeDTO[] = [];
-  for (const recipe of recipes) {
-    recipesDTO.push(RecipesMapper.toDTO(recipe));
-  }
+  const recipesDTO: RecipeDTO[] = recipes.map(recipe => RecipesMapper.toDTO(recipe)); //Map plutôt que for
   return res.status(200).json(recipesDTO);
 });
 
@@ -97,16 +95,12 @@ recipesController.put("/:id", AuthService.authorize, (req: AuthenticatedRequest,
   LoggerService.info("[PUT] /recipes/:id");
 
   if (!req.user) return res.sendStatus(401);
-  //const user = req.user;
 
-  const{user, params, body} = req;
-  const id = Number(params.id); //possible de faire cette étape au dessus ?
+  const{user, params, body} = req; //destructuration
+  const id = Number(params.id);
   if (!Number.isInteger(id) || id < 1) return res.sendStatus(400);
 
-  // const body: unknown = req.body;
   if (!isNewRecipeDTO(body)) return res.sendStatus(400);
-
-  
 
   const recipe = RecipesService.getById(id);
   if (!recipe) return res.sendStatus(404);
@@ -121,7 +115,7 @@ recipesController.put("/:id", AuthService.authorize, (req: AuthenticatedRequest,
   return res.sendStatus(204);
 });
 
-//Ajout de la route patch
+
 /**
  * PATCH /recipes/:id
  * Update certains champs d'une recette existante (auteur ou admin uniquement)

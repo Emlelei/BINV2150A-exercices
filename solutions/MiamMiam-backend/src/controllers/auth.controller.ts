@@ -13,17 +13,18 @@ export const authController = Router();
  * POST /auth/register
  * Crée un compte et renvoie un token (l'utilisateur est directement connecté)
  */
-authController.post("/register", (req: Request, res: Response) => {
+//Another asyncronous function
+authController.post("/register", async (req: Request, res: Response) => {
   LoggerService.info("[POST] /auth/register");
 
   const body: unknown = req.body;
   if (!isNewUserDTO(body)) return res.sendStatus(400);
 
   const newUser = UsersMapper.fromNewDTO(body);
-  const user = UsersService.create(newUser);
+  const user = await UsersService.create(newUser); //await
   if (!user) return res.sendStatus(409); // email déjà utilisé
 
-  const token = AuthService.login(user.email, user.password);
+  const token = await AuthService.login(user.email, newUser.password);
   if (!token) return res.sendStatus(500);
 
   const tokenDTO: TokenDTO = { token: token };
@@ -34,7 +35,7 @@ authController.post("/register", (req: Request, res: Response) => {
  * POST /auth/login
  * Vérifie les identifiants et renvoie un token
  */
-authController.post("/login", (req: Request, res: Response) => {
+authController.post("/login", async (req: Request, res: Response) => {
   LoggerService.info("[POST] /auth/login");
 
   const body: unknown = req.body;
@@ -42,7 +43,7 @@ authController.post("/login", (req: Request, res: Response) => {
 
   const{email, password} = body; //En une ligne au lieu de deux.
 
-  const token = AuthService.login(email, password);
+  const token = await AuthService.login(email, password);
   if (!token) return res.sendStatus(401);
 
   const tokenDTO: TokenDTO = { token: token };

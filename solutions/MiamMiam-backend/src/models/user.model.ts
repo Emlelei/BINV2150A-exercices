@@ -8,7 +8,7 @@ export enum ERole {
 /** Utilisateur dans le code métier */
 export interface User extends BasicModel {
   email: string;
-  password: string;
+  hashedPassword: string;
   firstName: string;
   lastName: string;
   role: ERole;
@@ -26,7 +26,7 @@ export interface NewUser {
 /** Forme stockée dans data/users.json */
 export interface UserDBO extends BasicModelDBO {
   email: string;
-  password: string;
+  hashed_password: string;
   first_name: string;
   last_name: string;
   role: ERole;

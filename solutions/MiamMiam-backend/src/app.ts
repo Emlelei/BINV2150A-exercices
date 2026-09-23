@@ -17,3 +17,4 @@ app.use("/auth", authController);
 app.use("/categories", categoriesController);
 app.use("/recipes", recipesController);
 app.use("/users", usersController);
+

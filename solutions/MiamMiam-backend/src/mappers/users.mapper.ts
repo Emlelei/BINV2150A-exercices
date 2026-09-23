@@ -35,7 +35,7 @@ export class UsersMapper {
     return {
       id: user.id,
       email: user.email,
-      password: user.password,
+      hashed_password: user.hashedPassword,
       first_name: user.firstName,
       last_name: user.lastName,
       role: user.role,
@@ -49,7 +49,7 @@ export class UsersMapper {
     return {
       id: dbo.id,
       email: dbo.email,
-      password: dbo.password,
+      hashedPassword: dbo.hashed_password,
       firstName: dbo.first_name,
       lastName: dbo.last_name,
       role: dbo.role,

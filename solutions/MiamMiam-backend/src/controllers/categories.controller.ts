@@ -14,10 +14,7 @@ categoriesController.get("/", (req: Request, res: Response) => {
   LoggerService.info("[GET] /categories");
 
   const categories = CategoriesService.getAll();
-  const categoriesDTO: CategoryDTO[] = [];
-  for (const category of categories) {
-    categoriesDTO.push(CategoriesMapper.toDTO(category));
-  }
+  const categoriesDTO: CategoryDTO[] = categories.map(category => CategoriesMapper.toDTO(category));
   return res.status(200).json(categoriesDTO);
 });
 

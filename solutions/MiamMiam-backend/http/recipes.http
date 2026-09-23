@@ -150,7 +150,6 @@ Authorization: {{login.response.body.token}}
 ### Modifier partiellement la recette d'alice (non authentifié) -> 401
 PATCH {{server}}/recipes/{{createRecipe.response.body.id}}
 Content-Type: application/json
-Authorization: {{login.response.body.token}}
 
 {
   "tags": ["rapide", "végétarien"],
